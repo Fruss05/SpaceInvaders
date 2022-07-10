@@ -1,0 +1,71 @@
+body {
+    font-family: 'Odibee Sans', cursive;
+   
+}
+.dashboard{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.datos{
+  width: 300px;
+  height: 300px;
+  border: solid #808000 3px;
+  background-color: gray;
+  align-items: center;
+}
+
+.datos h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.usuario{
+font-size: medium;
+text-align: center;
+}
+
+.puntos {
+    height: 20px;
+    font-size: large;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+
+.grid {
+    width: 300px;
+    height: 300px;
+    border: solid #808000 3px;
+    display:flex;
+    flex-wrap: wrap;
+    background-image: url(./img/stars.jpg);
+    
+}
+
+.grid div {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+}
+
+.invader {
+    background-color: lawngreen;
+    border-radius: 10px;
+
+}
+
+.ship {
+    background-color: white;
+        
+}
+
+.laser {
+    background-color: purple;
+}
+
+.explosion {
+    background-color: red;
+}
