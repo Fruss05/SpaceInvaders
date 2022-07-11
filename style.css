@@ -1,5 +1,6 @@
 body {
     font-family: 'Odibee Sans', cursive;
+    display: flex;
    
 }
 .dashboard{
@@ -27,8 +28,9 @@ text-align: center;
 }
 
 .puntos {
-    height: 20px;
+    height: auto;
     font-size: large;
+    text-align: left;
     justify-content: center;
     display: flex;
     align-items: center;

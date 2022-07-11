@@ -1,6 +1,8 @@
 const grid = document.querySelector('.grid')
 const muestraResultado = document.querySelector('.puntos')
 let naveUsuario = 202
+let fin = false
+let dibujado = 0
 let width = 15
 let direction = 1
 let haciaDerecha = true
@@ -29,6 +31,31 @@ const invasores = [
     15,16,17,18,19,20,21,22,23,24,
     30,31,32,33,34,35,36,37,38,39
 ]
+async function postResponse() {
+    await fetch("https://space-invaders-table.herokuapp.com/scores", {
+method: 'POST',
+headers: {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+},
+body: `{
+    "username": "${entrada}",
+    "userscore": ${resultado}
+}`,
+});
+}
+
+const scoreboard = () => {
+    fetch('https://space-invaders-table.herokuapp.com/scores').then(res => res.json())
+    .then(data => {
+        let oldScores =`GAME OVER <br/> resultado: ${resultado} <br/> <br/>LAST SCORES <br/>`
+        for(let i = 0; i< data.length; i++){
+            oldScores += `${data[i].username} : ${data[i].userscore} pts <br/>`
+        }
+        muestraResultado.innerHTML = oldScores  
+    })
+}
+
 
 function draw (){
     for (let i=0; i < invasores.length; i++) {
@@ -36,6 +63,7 @@ function draw (){
         cuadrados[invasores[i]].classList.add('invader')
        }
     }
+    dibujado++
 }
 draw ()
 
@@ -96,18 +124,26 @@ draw()
 // adicionalmente, a medida de que el jugador mate invasores irá sumando puntos que se guardaran en el local storage.
 
 if (cuadrados[naveUsuario].classList.contains('invader', 'ship')){
-    muestraResultado.innerHTML = 'GAME OVER'
+    postResponse()
+    scoreboard()
     clearInterval(invadersId)
 }
-
-for (let i = 0; i < invasores.length; i++){
-if(invasores[i] > cuadrados.length) {
-  muestraResultado.innerHTML = 'GAME OVER'
+const working = () => {
+    for (let i = 0; i < invasores.length; i++){
+        if(invasores[i] > cuadrados.length || dibujado >= 60) {
+          fin = true
+          }
+         }
+}
+working()
+ if(fin){
+    postResponse()
+    scoreboard()
   clearInterval(invadersId)
-  }
  }
  if(quitarInvasores.length === invasores.length) {
-    muestraResultado.innerHTML = 'GANASTE'
+   postResponse()
+    scoreboard()
     clearInterval(invadersId)
 }
 localStorage.setItem("puntuacion", resultado);
@@ -122,6 +158,7 @@ function disparo (e) {
     let laserId
     let laserNave = naveUsuario
     function moverLaser(){
+        if(laserNave >= 15) {
         cuadrados[laserNave].classList.remove('laser')
         laserNave -= width
         cuadrados[laserNave].classList.add('laser')
@@ -141,6 +178,10 @@ function disparo (e) {
           console.log(quitarInvasores)
           
         }
+    }else {
+        cuadrados[laserNave].classList.remove('laser')
+    }
+        
     }
     switch (e.key) {
         case 'ArrowUp':
